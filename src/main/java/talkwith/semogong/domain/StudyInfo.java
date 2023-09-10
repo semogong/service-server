@@ -2,12 +2,10 @@ package talkwith.semogong.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.domain.sub.StudyStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,5 +24,8 @@ public class StudyInfo {
     private Integer studyRatio;
 
     private StudyStatus studyStatus;
+
+    @ManyToOne
+    private Member member;
 
 }
