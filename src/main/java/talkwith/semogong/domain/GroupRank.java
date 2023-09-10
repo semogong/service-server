@@ -8,12 +8,12 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class MemberRank {
+public class GroupRank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private RankType type;
+    private RankType rankType;
 }

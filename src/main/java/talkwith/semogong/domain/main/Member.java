@@ -1,7 +1,8 @@
-package talkwith.semogong.domain;
+package talkwith.semogong.domain.main;
 
 import lombok.Getter;
 import lombok.Setter;
+import talkwith.semogong.domain.MemberRank;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ public class Member {
     private String password;
 
     @OneToOne
-    private UserRank userRank;
+    private MemberRank memberRank;
     private Integer totalstudyTime;
     private Integer totalstudyRatio;
 }
