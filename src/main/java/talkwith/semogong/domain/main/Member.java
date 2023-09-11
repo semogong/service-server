@@ -15,9 +15,9 @@ public class Member {
     private String name;
     private String email;
     private String password;
+    private Integer totalstudyTime;
+    private Integer totalstudyRatio;
 
     @OneToOne
     private MemberRank memberRank;
-    private Integer totalstudyTime;
-    private Integer totalstudyRatio;
 }
