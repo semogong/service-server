@@ -21,7 +21,7 @@ public class BasicLoginController {
     @GetMapping("/test")
     public JsonResponse test(@RequestParam(required = false) LoginRequestDto loginRequestDto) {
         JsonResponse jsonResponse = new JsonResponse();
-        jsonResponse.setStatusCode("0000");
+        jsonResponse.setStatusCode(JsonResponse.SUCCESS);
         HashMap<String, Object> test = new HashMap<>();
         test.put("result", basicLoginService.test());
         jsonResponse.setData(test);
