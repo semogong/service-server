@@ -15,8 +15,4 @@ public interface BasicJoinRepository {
     EmailAuthInfo findCodeByEmail(String email);
     void saveMember(Member member);
 
-//    Member findMember(Long id);
-//
-//    List<Member> findAll();
-
 }
