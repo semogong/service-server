@@ -7,7 +7,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import talkwith.semogong.domain.main.Member;
-import talkwith.semogong.join.basic.repository.BasicJoinRepository;
 import talkwith.semogong.login.basic.repository.BasicLoginRepository;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.util.JsonResponse;

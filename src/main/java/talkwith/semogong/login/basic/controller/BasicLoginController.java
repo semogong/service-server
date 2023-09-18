@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import talkwith.semogong.join.basic.model.JoinRequestDto;
-import talkwith.semogong.join.basic.service.BasicJoinService;
+
 import talkwith.semogong.login.basic.model.LoginRequestDto;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.util.JsonResponse;
 
-import javax.validation.Valid;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ public class BasicLoginController {
     private final BasicLoginService basicLoginService;
 
     @PostMapping("/check-login")
-    public JsonResponse BasicLoginForm(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult error){
+    public JsonResponse BasicLoginForm(@RequestBody LoginRequestDto loginRequestDto, BindingResult error){
 
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
@@ -40,7 +39,7 @@ public class BasicLoginController {
     }
 
     @PostMapping("/find-id")
-    public JsonResponse FindId(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult error){
+    public JsonResponse FindId(@RequestBody LoginRequestDto loginRequestDto, BindingResult error){
 
         String name = loginRequestDto.getName();
 
@@ -55,7 +54,7 @@ public class BasicLoginController {
     }
 
     @PostMapping("/find-pw")
-    public JsonResponse FindPw(@RequestBody @Valid LoginRequestDto loginRequestDto, BindingResult error){
+    public JsonResponse FindPw(@RequestBody LoginRequestDto loginRequestDto, BindingResult error){
 
         String email = loginRequestDto.getEmail();
 
