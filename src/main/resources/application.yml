@@ -7,13 +7,29 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: 'dlwogns1205@gmail.com'
+    password: 'mrah qxxf okfz fwjf'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging.level:
   org.hibernate.SQL: debug
+
+
+
 
 # org.hibernate.type: trace #??? ?? 2.x, hibernate5
 # org.hibernate.orm.jdbc.bind: trace #??? ?? 3.x, hibernate6
