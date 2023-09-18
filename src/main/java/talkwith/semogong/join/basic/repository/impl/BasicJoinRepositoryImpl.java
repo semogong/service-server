@@ -58,17 +58,4 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
         entityManager.persist(member);
     }
 
-
-//    @Override
-//    public Member findMember(Long id) {
-//        return entityManager.find(Member.class,id);
-//    }
-//
-//
-//    @Override
-//    public List<Member> findAll() {
-//        return entityManager.createQuery("select m from Member m", Member.class)
-//                .getResultList();
-//    }
-
 }

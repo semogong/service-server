@@ -22,14 +22,11 @@ public interface BasicJoinService {
 
     void validateNameLength(String name) throws FormInfoException;
 
-    void validateNameShape(String name) throws FormInfoException;
+    void validateNameDuplicate(String name) throws FormInfoException;
+
 
     HashMap<String, Object> sendAuthEmail(String email);
 
     HashMap<String, Object> validateAuthCode(String email, String password, String name, String code);
-
-//    List<Member> findMembers();
-//
-//    Member findOne(Long id);
 
 }

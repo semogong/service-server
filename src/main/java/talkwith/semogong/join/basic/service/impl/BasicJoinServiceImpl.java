@@ -38,7 +38,7 @@ public class BasicJoinServiceImpl implements BasicJoinService {
             validatePasswordLength(password);
             validatePasswordShape(password);
             validateNameLength(name);
-            validateNameShape(name);
+            validateNameDuplicate(name);
             result.put("msg","회원 정보가 정상적으로 입력되었습니다.");
             result.put("statusCode",JsonResponse.SUCCESS);
             result.put("data",null);
@@ -98,8 +98,7 @@ public class BasicJoinServiceImpl implements BasicJoinService {
     }
 
     @Override
-    public void validateNameShape(String name) throws FormInfoException{
-        // 이메일 중복 확인
+    public void validateNameDuplicate(String name) throws FormInfoException{
         List<Member> findMembers = basicJoinRepository.findMemberByName(name);
 
         if (!findMembers.isEmpty()) {
@@ -166,15 +165,5 @@ public class BasicJoinServiceImpl implements BasicJoinService {
 
         return result;
     }
-
-//    @Override
-//    public List<Member> findMembers(){
-//        return basicJoinRepository.findAll();
-//    }
-//
-//    @Override
-//    public Member findOne(Long id){
-//        return basicJoinRepository.findMember(id);
-//    }
 
 }
