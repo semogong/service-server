@@ -1,7 +1,9 @@
 package talkwith.semogong.login.basic.service.impl;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ import talkwith.semogong.login.basic.repository.BasicLoginRepository;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.util.JsonResponse;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 
 @Service
@@ -43,11 +48,28 @@ public class BasicLoginServiceImpl implements BasicLoginService {
         } else {
             result.put("msg","로그인 성공!");
             result.put("statusCode",JsonResponse.SUCCESS);
+            //String token = generateToken(member.getEmail());
             result.put("data",null);
         }
 
         return result;
     }
+
+//    private String generateToken(String email){
+//        SecureRandom secureRandom = new SecureRandom();
+//        byte[] keyBytes = new byte[32];
+//        secureRandom.nextBytes(keyBytes);
+//        String secureKey = Base64.getEncoder().encodeToString(keyBytes);
+//
+//        long expirationMillis = 3600000;
+//
+//        Date now = new Date();
+//        Date expiration = new Date(now.getTime() + expirationMillis);
+//
+//        String token = Jwts.builder().setSubject(email).setIssuedAt(now).setExpiration(expiration).signWith(SignatureAlgorithm.HS256,secureKey).compact();
+//
+//        return token;
+//    }
 
     @Override
     public HashMap<String, Object> validateFindId(String name){
