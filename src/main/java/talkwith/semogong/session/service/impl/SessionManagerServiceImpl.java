@@ -1,13 +1,10 @@
 package talkwith.semogong.session.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import talkwith.semogong.domain.SessionInfo;
-import talkwith.semogong.login.basic.repository.BasicLoginRepository;
 import talkwith.semogong.session.repository.SessionManagerRepository;
 import talkwith.semogong.session.service.SessionManagerService;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
@@ -46,7 +43,7 @@ public class SessionManagerServiceImpl implements SessionManagerService {
             }
         }
 
-        if (cookieValue == ""){
+        if (cookieValue.equals("")){
             return "세션이 만료되었습니다.";
         }else {
             SessionInfo sessionInfo = sessionManagerRepository.findByCookie(cookieValue);

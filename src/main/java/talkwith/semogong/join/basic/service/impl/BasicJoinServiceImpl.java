@@ -1,7 +1,6 @@
 package talkwith.semogong.join.basic.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -9,12 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 import talkwith.semogong.domain.EmailAuthInfo;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.exception.FormInfoException;
-import talkwith.semogong.join.basic.model.JoinRequestDto;
 import talkwith.semogong.join.basic.repository.BasicJoinRepository;
 import talkwith.semogong.join.basic.service.BasicJoinService;
 import talkwith.semogong.util.JsonResponse;
+import talkwith.semogong.util.ResponseResult;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -25,12 +23,13 @@ public class BasicJoinServiceImpl implements BasicJoinService {
 
     private final BasicJoinRepository basicJoinRepository;
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
+
+    private final Random random = new Random();
 
     @Override
-    public HashMap<String, Object> validateFormInfo(String email, String password, String name) {
-        HashMap<String, Object> result = new HashMap<>();
+    public ResponseResult validateFormInfo(String email, String password, String name) {
+        ResponseResult result = new ResponseResult();
 
         try {
             validateEmailShape(email);
@@ -39,26 +38,24 @@ public class BasicJoinServiceImpl implements BasicJoinService {
             validatePasswordShape(password);
             validateNameLength(name);
             validateNameDuplicate(name);
-            result.put("msg","회원 정보가 정상적으로 입력되었습니다.");
-            result.put("statusCode",JsonResponse.SUCCESS);
-            result.put("data",null);
-
-            return result;
+            result.setStatusCode(JsonResponse.SUCCESS);
+            result.setMsg("회원 정보가 정상적으로 입력되었습니다.");
+            result.setData(null);
 
         } catch (FormInfoException e){
-            result.put("statusCode",e.getErrorCode());
-            result.put("msg",e.getMessage());
-
-            return result;
+            result.setStatusCode(e.getErrorCode());
+            result.setMsg(e.getMessage());
+            result.setData(null);
         }
 
+        return result;
     }
 
     @Override
     public void validateEmailShape(String email) throws FormInfoException {
         // 이메일 양식 확인
-        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            throw new FormInfoException("올바른 이메일 형식이 아닙니다.",JsonResponse.SHAPE_ERROR_EMAIL);
+        if (!email.matches("^\\d+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new FormInfoException("올바른 이메일 형식이 아닙니다.", JsonResponse.SHAPE_ERROR_EMAIL);
         }
     }
 
@@ -74,7 +71,7 @@ public class BasicJoinServiceImpl implements BasicJoinService {
 
     @Override
     public void validatePasswordLength(String password) throws FormInfoException{
-        Integer passWordLength = password.length();
+        int passWordLength = password.length();
         // 비밀번호 길이 확인
         if (!(passWordLength>=4 && passWordLength<=12)){
             throw new FormInfoException("비밀번호는 4자~12자여야 합니다.",JsonResponse.LENGTH_ERROR_PASSWORD);
@@ -83,14 +80,14 @@ public class BasicJoinServiceImpl implements BasicJoinService {
 
     @Override
     public void validatePasswordShape(String password) throws FormInfoException{
-        if (!password.matches("(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{6,12}")){
+        if (!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*\\W)(?=\\S+$).{6,12}")){
             throw new FormInfoException("비밀번호는 영문자와 숫자, 특수기호가 적어도 1개 이상 포함되어야 합니다.",JsonResponse.SHAPE_ERROR_PASSWORD);
         }
     }
 
     @Override
     public void validateNameLength(String name) throws FormInfoException{
-        Integer nameWordLength = name.length();
+        int nameWordLength = name.length();
         // 이름 길이 확인
         if (!(nameWordLength>=2 && nameWordLength<=10)){
             throw new FormInfoException("이름은 2자~10자여야 합니다.",JsonResponse.LENGTH_ERROR_NAME);
@@ -106,13 +103,12 @@ public class BasicJoinServiceImpl implements BasicJoinService {
         }
     }
 
-
     @Override
     @Transactional
-    public HashMap<String, Object> sendAuthEmail(String email){
-        HashMap<String, Object> result = new HashMap<>();
+    public ResponseResult sendAuthEmail(String email){
+        ResponseResult result = new ResponseResult();
 
-        String code = Integer.toString(new Random().nextInt(888888) + 111111);
+        String code = Integer.toString(random.nextInt(888888) + 111111);
 
         // 이메일, 인증코드 DB에 저장
         EmailAuthInfo emailAuthInfo = new EmailAuthInfo();
@@ -127,29 +123,29 @@ public class BasicJoinServiceImpl implements BasicJoinService {
         message.setText("세모공에 방문해주셔서 감사합니다.\n\n" + "인증번호는 " + code + " 입니다." + "\n\n 인증번호를 인증코드란에 기입해주세요.");
         mailSender.send(message);
 
-        result.put("msg","이메일로 인증번호가 전송되었습니다.");
-        result.put("statusCode",JsonResponse.SUCCESS);
-        result.put("data",null);
+        result.setStatusCode(JsonResponse.SUCCESS);
+        result.setMsg("이메일로 인증번호가 전송되었습니다.");
+        result.setData(null);
 
         return result;
     }
 
     @Override
     @Transactional
-    public HashMap<String, Object> validateAuthCode(String email, String password, String name, String code){
-        HashMap<String, Object> result = new HashMap<>();
+    public ResponseResult validateAuthCode(String email, String password, String name, String code){
+        ResponseResult result = new ResponseResult();
 
         EmailAuthInfo findEmailAuthInfo = basicJoinRepository.findCodeByEmail(email);
 
         if (findEmailAuthInfo==null){
-            result.put("msg","인증요청을 눌러주세요.");
-            result.put("statusCode",JsonResponse.NOT_GENERATED_CODE);
-            result.put("data",null);
+            result.setStatusCode(JsonResponse.NOT_GENERATED_CODE);
+            result.setMsg("인증요청을 눌러주세요.");
+            result.setData(null);
 
         } else if (!findEmailAuthInfo.getCode().equals(code)) {
-            result.put("msg","인증번호가 일치하지않습니다.");
-            result.put("statusCode",JsonResponse.NOT_MATCHED_CODE);
-            result.put("data",null);
+            result.setStatusCode(JsonResponse.NOT_MATCHED_CODE);
+            result.setMsg("인증번호가 일치하지않습니다.");
+            result.setData(null);
 
         } else {
             Member member = new Member();
@@ -158,11 +154,10 @@ public class BasicJoinServiceImpl implements BasicJoinService {
             member.setName(name);
             basicJoinRepository.saveMember(member);
 
-            result.put("msg","인증번호가 일치합니다.");
-            result.put("statusCode",JsonResponse.SUCCESS);
-            result.put("data",null);
+            result.setStatusCode(JsonResponse.SUCCESS);
+            result.setMsg("인증번호가 일치합니다.");
+            result.setData(null);
         }
-
         return result;
     }
 

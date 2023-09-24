@@ -1,16 +1,11 @@
 package talkwith.semogong.join.basic.service;
 
-import org.springframework.core.codec.StringDecoder;
-import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.exception.FormInfoException;
-
-import java.util.HashMap;
-import java.util.List;
-
+import talkwith.semogong.util.ResponseResult;
 
 public interface BasicJoinService {
 
-    HashMap<String, Object> validateFormInfo(String email, String password, String name);
+    ResponseResult validateFormInfo(String email, String password, String name);
 
     void validateEmailShape(String email) throws FormInfoException;
 
@@ -25,8 +20,8 @@ public interface BasicJoinService {
     void validateNameDuplicate(String name) throws FormInfoException;
 
 
-    HashMap<String, Object> sendAuthEmail(String email);
+    ResponseResult sendAuthEmail(String email);
 
-    HashMap<String, Object> validateAuthCode(String email, String password, String name, String code);
+    ResponseResult validateAuthCode(String email, String password, String name, String code);
 
 }

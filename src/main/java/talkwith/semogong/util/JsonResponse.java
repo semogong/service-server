@@ -20,12 +20,17 @@ public class JsonResponse {
     public static final String NOT_GENERATED_CODE = "0007";
     public static final String NOT_MATCHED_CODE = "0008";
 
-
     public static final String GENERAL_FAIL = "9999";
 
 
     private String statusCode;
     private String msg;
     private Map<String, Object> data;
+
+    public JsonResponse(ResponseResult result) {
+        this.statusCode = result.getStatusCode();
+        this.msg = result.getMsg();
+        this.data = result.getData();
+    }
 
 }

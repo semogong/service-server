@@ -1,7 +1,7 @@
 package talkwith.semogong.join.basic.exception;
 
 public class FormInfoException extends Exception{
-    private String errorCode;
+    private final String errorCode;
 
     public FormInfoException(String message, String errorCode) {
         super(message);
