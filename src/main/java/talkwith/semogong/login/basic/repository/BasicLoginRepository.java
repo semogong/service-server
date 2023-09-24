@@ -3,9 +3,11 @@ package talkwith.semogong.login.basic.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import talkwith.semogong.domain.main.Member;
 
-public interface BasicLoginRepository extends JpaRepository<Member,Long> {
+import java.util.Optional;
 
-    Member findByEmail(String email);
+public interface BasicLoginRepository {
 
-    Member findByName(String name);
+    Optional<Member> findMemberByEmail(String email);
+
+    Optional<Member> findMemberByName(String name);
 }

@@ -12,4 +12,11 @@ public class ResponseResult {
     private String statusCode;
     private String msg;
     private Map<String, Object> data;
+
+    public ResponseResult(String statusCode, String msg, Map<String, Object> data){
+        this.statusCode = statusCode;
+        this.msg = msg;
+        this.data = data;
+    }
+
 }
