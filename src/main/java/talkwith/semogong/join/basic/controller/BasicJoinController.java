@@ -1,72 +1,52 @@
 package talkwith.semogong.join.basic.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import talkwith.semogong.join.basic.model.JoinRequestDto;
 import talkwith.semogong.join.basic.service.BasicJoinService;
 import talkwith.semogong.util.JsonResponse;
-import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
+import talkwith.semogong.util.ResponseResult;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/join")
+@Slf4j
 public class BasicJoinController {
 
     private final BasicJoinService basicJoinService;
 
     @PostMapping("/check-form")
-    public JsonResponse BasicJoinForm(@RequestBody @Valid JoinRequestDto joinRequestDto, BindingResult error){
-
+    public JsonResponse basicJoinForm(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
         String password = joinRequestDto.getPassword();
         String name = joinRequestDto.getName();
 
-        HashMap<String, Object> result = basicJoinService.validateFormInfo(email,password,name);
+        ResponseResult result = basicJoinService.validateFormInfo(email, password, name);
 
-        JsonResponse response = new JsonResponse();
-        response.setStatusCode(result.get("statusCode").toString());
-        response.setMsg(result.get("msg").toString());
-        response.setData((Map<String, Object>) result.get("data"));
-
-        return response;
+        return new JsonResponse(result);
     }
 
     @PostMapping("/send-code")
-    public JsonResponse BasicJoinAuth(@RequestBody @Valid JoinRequestDto joinRequestDto, BindingResult error){
-
+    public JsonResponse basicJoinAuth(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
 
-        HashMap<String, Object> result = basicJoinService.sendAuthEmail(email);
+        ResponseResult result = basicJoinService.sendAuthEmail(email);
+        log.info("이메일 전송을 완료했습니다.");
 
-        System.out.println("이메일 전송을 완료했습니다.");
-
-        JsonResponse response = new JsonResponse();
-        response.setStatusCode(result.get("statusCode").toString());
-        response.setMsg(result.get("msg").toString());
-        response.setData((Map<String, Object>) result.get("data"));
-
-        return response;
+        return new JsonResponse(result);
     }
 
     @PostMapping("/check-code")
-    public JsonResponse BasicJoin(@RequestBody JoinRequestDto joinRequestDto, BindingResult error){
-
+    public JsonResponse basicJoin(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
         String password = joinRequestDto.getPassword();
         String name = joinRequestDto.getName();
         String code = joinRequestDto.getCode();
 
-        HashMap<String, Object> result = basicJoinService.validateAuthCode(email,password,name,code);
+        ResponseResult result = basicJoinService.validateAuthCode(email, password, name, code);
 
-        JsonResponse response = new JsonResponse();
-        response.setStatusCode(result.get("statusCode").toString());
-        response.setMsg(result.get("msg").toString());
-        response.setData((Map<String, Object>) result.get("data"));
-
-        return response;
+        return new JsonResponse(result);
     }
 
 }

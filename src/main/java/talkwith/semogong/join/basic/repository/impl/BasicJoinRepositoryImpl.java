@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import talkwith.semogong.domain.EmailAuthInfo;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.repository.BasicJoinRepository;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
 
     @Override
     public void saveEmailAuthInfo(EmailAuthInfo emailAuthInfo) {
-        System.out.println("emailAuth = " + emailAuthInfo);
         entityManager.persist(emailAuthInfo);
     }
 
@@ -54,7 +52,6 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
 
     @Override
     public void saveMember(Member member) {
-        System.out.println("member = " + member);
         entityManager.persist(member);
     }
 

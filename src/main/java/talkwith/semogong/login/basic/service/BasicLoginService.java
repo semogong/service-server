@@ -1,13 +1,13 @@
 package talkwith.semogong.login.basic.service;
 
-import java.util.HashMap;
+import talkwith.semogong.util.ResponseResult;
 
 public interface BasicLoginService {
 
-    HashMap<String, Object> validateLoginInfo(String email, String password);
+    ResponseResult validateLoginInfo(String email, String password);
 
-    HashMap<String, Object> validateFindId(String name);
+    ResponseResult validateFindId(String name);
 
-    HashMap<String, Object> validateFindPassword(String email);
+    ResponseResult validateFindPassword(String email);
 
 }
