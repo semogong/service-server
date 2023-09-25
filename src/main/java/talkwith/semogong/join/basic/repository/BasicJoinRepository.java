@@ -12,6 +12,8 @@ public interface BasicJoinRepository {
 
     void saveEmailAuthInfo(EmailAuthInfo emailAuthInfo);
 
+    void initEmailAuthInfo(String email);
+
     Optional<EmailAuthInfo> findCodeByEmail(String email);
     void saveMember(Member member);
 
