@@ -2,12 +2,10 @@ package talkwith.semogong.util;
 
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Data
-@Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ResponseCode {
     public static final String SUCCESS = "0000";
