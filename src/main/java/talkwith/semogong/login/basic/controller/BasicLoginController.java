@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import talkwith.semogong.login.basic.model.LoginRequestDto;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.session.service.impl.SessionManagerServiceImpl;
-import talkwith.semogong.util.JsonResponse;
-import talkwith.semogong.util.ResponseCode;
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.JsonResponse;
+import talkwith.semogong.util.response.ResponseCode;
+import talkwith.semogong.util.response.ResponseResult;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
