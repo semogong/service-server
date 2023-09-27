@@ -1,9 +1,13 @@
 package talkwith.semogong.login.basic.service;
 
-import org.springframework.stereotype.Service;
-
+import talkwith.semogong.util.ResponseResult;
 
 public interface BasicLoginService {
 
-    String test();
+    ResponseResult validateLoginInfo(String email, String password);
+
+    ResponseResult validateFindId(String name);
+
+    ResponseResult validateFindPassword(String email);
+
 }

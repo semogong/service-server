@@ -2,7 +2,6 @@ package talkwith.semogong.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GeneratorType;
 import talkwith.semogong.domain.main.Member;
 
 import javax.persistence.*;
