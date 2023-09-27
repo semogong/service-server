@@ -1,7 +1,11 @@
 package talkwith.semogong.login.basic.repository;
 
-import org.springframework.stereotype.Repository;
+import talkwith.semogong.domain.main.Member;
+import java.util.Optional;
 
-@Repository
 public interface BasicLoginRepository {
+
+    Optional<Member> findMemberByEmail(String email);
+
+    Optional<Member> findMemberByName(String name);
 }
