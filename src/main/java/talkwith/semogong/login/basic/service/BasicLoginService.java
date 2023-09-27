@@ -1,6 +1,6 @@
 package talkwith.semogong.login.basic.service;
 
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.ResponseResult;
 
 public interface BasicLoginService {
 
