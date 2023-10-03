@@ -86,13 +86,11 @@ public class BasicJoinServiceImpl implements BasicJoinService {
     public ResponseResult sendAuthEmail(String email){
         String code = Integer.toString(random.nextInt(888888) + 111111);
 
-        // 이메일, 인증코드 DB에 저장
         EmailAuthInfo emailAuthInfo = new EmailAuthInfo();
         emailAuthInfo.setTo(email);
         emailAuthInfo.setCode(code);
         basicJoinRepository.saveEmailAuthInfo(emailAuthInfo);
 
-        // 인증 이메일 전송
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("[세상의 모든 공부] 일반 회원가입 이메일 인증");
