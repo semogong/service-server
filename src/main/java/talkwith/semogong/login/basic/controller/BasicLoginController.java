@@ -31,7 +31,6 @@ public class BasicLoginController {
 
         ResponseResult result = basicLoginService.validateLoginInfo(email,password);
 
-        // 로그인 성공, 쿠키 생성 및 할당
         if (result.getStatusCode().equals(ResponseCode.SUCCESS)){
             Cookie cookie = sessionManagerServiceImpl.createSession(email);
             httpServletResponse.addCookie(cookie);
