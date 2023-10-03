@@ -9,8 +9,8 @@ import talkwith.semogong.domain.EmailAuthInfo;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.repository.BasicJoinRepository;
 import talkwith.semogong.join.basic.service.BasicJoinService;
-import talkwith.semogong.util.ResponseCode;
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.ResponseCode;
+import talkwith.semogong.util.response.ResponseResult;
 
 import java.util.*;
 
