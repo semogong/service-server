@@ -1,4 +1,4 @@
-package talkwith.semogong.util;
+package talkwith.semogong.util.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

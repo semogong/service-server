@@ -9,8 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.login.basic.repository.BasicLoginRepository;
 import talkwith.semogong.login.basic.service.BasicLoginService;
-import talkwith.semogong.util.ResponseCode;
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.ResponseCode;
+import talkwith.semogong.util.response.ResponseResult;
 
 import java.util.Map;
 import java.util.Optional;

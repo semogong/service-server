@@ -5,8 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import talkwith.semogong.join.basic.model.JoinRequestDto;
 import talkwith.semogong.join.basic.service.BasicJoinService;
-import talkwith.semogong.util.JsonResponse;
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.JsonResponse;
+import talkwith.semogong.util.response.ResponseResult;
 
 @RestController
 @RequiredArgsConstructor
