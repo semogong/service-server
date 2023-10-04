@@ -2,58 +2,88 @@ package talkwith.semogong.session.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import talkwith.semogong.domain.SessionInfo;
+import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.session.repository.SessionManagerRepository;
 import talkwith.semogong.session.service.SessionManagerService;
+
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SessionManagerServiceImpl implements SessionManagerService {
 
     private final SessionManagerRepository sessionManagerRepository;
 
     @Override
+    @Transactional
     public Cookie createSession(String email){
-        // 쿠키 생성
         String sessionId = UUID.randomUUID().toString();
-        Cookie cookie = new Cookie("myCookie", sessionId);
-        cookie.setMaxAge(3600); // 쿠키의 만료 시간을 설정 (초 단위)
+        Cookie cookie = new Cookie("semogong", sessionId);
+        cookie.setPath("/");
+        cookie.setDomain("localhost");
+        cookie.setMaxAge(3600);
 
         SessionInfo sessionInfo = new SessionInfo();
         sessionInfo.setEmail(email);
         sessionInfo.setCookie(cookie.getValue());
-        sessionManagerRepository.save(sessionInfo);
+        sessionManagerRepository.saveSessionInfo(sessionInfo);
 
         return cookie;
     }
 
+    public Member getMemberFromSession(HttpServletRequest request){
+        String cookieValue = checkSession(request);
+
+        if (cookieValue.equals("")){
+            return null;
+        }
+
+        String memberEmail = getUserEmailFromSession(cookieValue);
+
+        Optional<Member> findMember = sessionManagerRepository.findMemberByEmail(memberEmail);
+
+        if (findMember.isEmpty()){
+            return null;
+        }
+
+        return findMember.get();
+
+    }
+
     @Override
-    public String getSession(HttpServletRequest request){
+    public String checkSession(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         String cookieValue = "";
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if ("myCookie".equals(cookie.getName())) {
+                if ("semogong".equals(cookie.getName())) {
                     cookieValue = cookie.getValue();
+                    break;
                 }
             }
         }
 
-        if (cookieValue.equals("")){
-            return "세션이 만료되었습니다.";
-        }else {
-            SessionInfo sessionInfo = sessionManagerRepository.findByCookie(cookieValue);
-            if (sessionInfo != null) {
-                return "현재 사용자 : " + sessionInfo.getEmail();
-            }
-            else{
-                return "접근 권한이 없습니다.";
-            }
+        return cookieValue;
+    }
+
+    @Override
+    public String getUserEmailFromSession(String cookieValue){
+        Optional<SessionInfo> sessionInfoByCookieValue = sessionManagerRepository.findSessionInfoByCookieValue(cookieValue);
+        if (sessionInfoByCookieValue.isEmpty()){
+            return "";
         }
+
+        SessionInfo sessionInfo = sessionInfoByCookieValue.get();
+
+        return sessionInfo.getEmail();
     }
 
 }

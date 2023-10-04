@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter @Setter
-public class Post {
+public class Post extends Base{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,7 +17,11 @@ public class Post {
 
     private String title;
 
+    private String subtitle;
+
     private String content;
+
+    private String tag;
 
     private Integer view;
 
