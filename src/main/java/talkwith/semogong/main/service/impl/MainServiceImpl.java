@@ -23,7 +23,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MainServiceImpl implements MainService {
-
     private final SessionManagerService sessionManagerService;
 
     private final MainRepository mainRepository;

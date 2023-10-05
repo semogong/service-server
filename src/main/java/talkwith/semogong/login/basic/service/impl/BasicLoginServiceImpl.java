@@ -25,7 +25,7 @@ public class BasicLoginServiceImpl implements BasicLoginService {
 
     @Override
     @Transactional
-    public ResponseResult validateLoginInfo(String email, String password) {
+    public ResponseResult validateLogin(String email, String password) {
         Optional<Member> findMember = basicLoginRepository.findMemberByEmail(email);
 
         if (findMember.isEmpty()) {
