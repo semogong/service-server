@@ -66,7 +66,7 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
                 .selectFrom(emailAuthInfo)
                 .where(emailAuthInfo.to.eq(email))
                 .orderBy(emailAuthInfo.id.desc())
-                .fetchFirst(); // 최상단 결과 하나만 가져오기
+                .fetchFirst();
 
         return Optional.ofNullable(result);
     }
