@@ -1,17 +1,14 @@
 package talkwith.semogong.login.basic.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import talkwith.semogong.login.basic.model.LoginRequestDto;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.session.service.impl.SessionManagerServiceImpl;
-import talkwith.semogong.util.JsonResponse;
-import talkwith.semogong.util.ResponseCode;
-import talkwith.semogong.util.ResponseResult;
+import talkwith.semogong.util.response.JsonResponse;
+import talkwith.semogong.util.response.ResponseCode;
+import talkwith.semogong.util.response.ResponseResult;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
