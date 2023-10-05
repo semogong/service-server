@@ -1,10 +1,7 @@
 package talkwith.semogong.login.basic.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import talkwith.semogong.login.basic.model.LoginRequestDto;
 import talkwith.semogong.login.basic.service.BasicLoginService;
@@ -31,7 +28,6 @@ public class BasicLoginController {
 
         ResponseResult result = basicLoginService.validateLoginInfo(email,password);
 
-        // 로그인 성공, 쿠키 생성 및 할당
         if (result.getStatusCode().equals(ResponseCode.SUCCESS)){
             Cookie cookie = sessionManagerServiceImpl.createSession(email);
             httpServletResponse.addCookie(cookie);
