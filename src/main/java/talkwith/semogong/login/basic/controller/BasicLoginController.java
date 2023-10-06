@@ -16,17 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/login")
 public class BasicLoginController {
-
     private final BasicLoginService basicLoginService;
 
     private final SessionManagerServiceImpl sessionManagerServiceImpl;
 
     @PostMapping("/check-login")
-    public JsonResponse basicLoginForm(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse){
+    public JsonResponse basicValidateLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse){
         String email = loginRequestDto.getEmail();
         String password = loginRequestDto.getPassword();
 
-        ResponseResult result = basicLoginService.validateLoginInfo(email,password);
+        ResponseResult result = basicLoginService.validateLogin(email,password);
 
         if (result.getStatusCode().equals(ResponseCode.SUCCESS)){
             Cookie cookie = sessionManagerServiceImpl.createSession(email);
@@ -36,7 +35,6 @@ public class BasicLoginController {
         return new JsonResponse(result);
     }
 
-
     @PostMapping("/find-id")
     public JsonResponse findId(@RequestBody LoginRequestDto loginRequestDto){
         String name = loginRequestDto.getName();
@@ -45,7 +43,6 @@ public class BasicLoginController {
 
         return new JsonResponse(result);
     }
-
 
     @PostMapping("/find-pw")
     public JsonResponse findPw(@RequestBody LoginRequestDto loginRequestDto){

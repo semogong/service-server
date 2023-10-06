@@ -13,38 +13,37 @@ import talkwith.semogong.util.response.ResponseResult;
 @RequestMapping("/api/v1/join")
 @Slf4j
 public class BasicJoinController {
-
     private final BasicJoinService basicJoinService;
 
     @PostMapping("/check-form")
-    public JsonResponse basicJoinForm(@RequestBody JoinRequestDto joinRequestDto) {
+    public JsonResponse basicHandleJoinForm(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
         String password = joinRequestDto.getPassword();
         String name = joinRequestDto.getName();
 
-        ResponseResult result = basicJoinService.validateFormInfo(email, password, name);
+        ResponseResult result = basicJoinService.handleJoinForm(email, password, name);
 
         return new JsonResponse(result);
     }
 
     @PostMapping("/send-code")
-    public JsonResponse basicJoinAuth(@RequestBody JoinRequestDto joinRequestDto) {
+    public JsonResponse basicSendAuthCode(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
 
-        ResponseResult result = basicJoinService.sendAuthEmail(email);
+        ResponseResult result = basicJoinService.sendAuthCode(email);
         log.info("이메일 전송을 완료했습니다.");
 
         return new JsonResponse(result);
     }
 
-    @PostMapping("/check-code")
-    public JsonResponse basicJoin(@RequestBody JoinRequestDto joinRequestDto) {
+    @PostMapping("/check-join")
+    public JsonResponse basicValidateAndJoin(@RequestBody JoinRequestDto joinRequestDto) {
         String email = joinRequestDto.getEmail();
         String password = joinRequestDto.getPassword();
         String name = joinRequestDto.getName();
         String code = joinRequestDto.getCode();
 
-        ResponseResult result = basicJoinService.validateAuthCode(email, password, name, code);
+        ResponseResult result = basicJoinService.validateAndJoin(email, password, name, code);
 
         return new JsonResponse(result);
     }

@@ -5,7 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import talkwith.semogong.domain.EmailAuthInfo;
+import talkwith.semogong.domain.AuthInfo;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.repository.BasicJoinRepository;
 import talkwith.semogong.join.basic.service.BasicJoinService;
@@ -18,14 +18,34 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BasicJoinServiceImpl implements BasicJoinService {
-
     private final BasicJoinRepository basicJoinRepository;
 
     private final JavaMailSender mailSender;
 
     private final Random random = new Random();
 
-    public ResponseResult validateFormInfo(String email, String password, String name) {
+    @Override
+    @Transactional
+    public ResponseResult sendAuthCode(String email){
+        String code = Integer.toString(random.nextInt(888888) + 111111);
+
+        AuthInfo authInfo = new AuthInfo();
+        authInfo.setTo(email);
+        authInfo.setCode(code);
+        basicJoinRepository.saveAuthInfo(authInfo);
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("[세상의 모든 공부] 일반 회원가입 이메일 인증");
+        message.setText("세모공에 방문해주셔서 감사합니다.\n\n" + "인증번호는 " + code + " 입니다." + "\n\n 인증번호를 인증코드란에 기입해주세요.");
+        mailSender.send(message);
+
+        return ResponseResult.createResult(ResponseCode.SUCCESS, "일반 회원가입 인증 번호 전송 성공",
+                Map.of("clientMsg","이메일로 인증번호가 전송되었습니다."));
+    }
+
+    @Override
+    public ResponseResult handleJoinForm(String email, String password, String name) {
         if (!validateEmailShape(email)) {
             return ResponseResult.createResult(ResponseCode.SHAPE_ERROR_EMAIL, "회원 정보 비정상 입력", Map.of("clientMsg", "올바른 이메일 형식이 아닙니다."));
         }
@@ -83,39 +103,17 @@ public class BasicJoinServiceImpl implements BasicJoinService {
 
     @Override
     @Transactional
-    public ResponseResult sendAuthEmail(String email){
-        String code = Integer.toString(random.nextInt(888888) + 111111);
-
-        // 이메일, 인증코드 DB에 저장
-        EmailAuthInfo emailAuthInfo = new EmailAuthInfo();
-        emailAuthInfo.setTo(email);
-        emailAuthInfo.setCode(code);
-        basicJoinRepository.saveEmailAuthInfo(emailAuthInfo);
-
-        // 인증 이메일 전송
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("[세상의 모든 공부] 일반 회원가입 이메일 인증");
-        message.setText("세모공에 방문해주셔서 감사합니다.\n\n" + "인증번호는 " + code + " 입니다." + "\n\n 인증번호를 인증코드란에 기입해주세요.");
-        mailSender.send(message);
-
-        return ResponseResult.createResult(ResponseCode.SUCCESS, "일반 회원가입 인증 번호 전송 성공",
-                Map.of("clientMsg","이메일로 인증번호가 전송되었습니다."));
-    }
-
-    @Override
-    @Transactional
-    public ResponseResult validateAuthCode(String email, String password, String name, String code){
-        Optional<EmailAuthInfo> findEmailAuthInfo = basicJoinRepository.findCodeByEmail(email);
+    public ResponseResult validateAndJoin(String email, String password, String name, String code){
+        Optional<AuthInfo> findEmailAuthInfo = basicJoinRepository.findAuthInfoByEmail(email);
 
         if (findEmailAuthInfo.isEmpty()) {
             return ResponseResult.createResult(ResponseCode.NOT_GENERATED_CODE, "인증번호가 생성되지 않음",
                     Map.of("clientMsg", "인증요청을 눌러주세요."));
         }
 
-        EmailAuthInfo emailAuthInfo = findEmailAuthInfo.get();
+        AuthInfo authInfo = findEmailAuthInfo.get();
 
-        if (!emailAuthInfo.getCode().equals(code)) {
+        if (!authInfo.getCode().equals(code)) {
             return ResponseResult.createResult(ResponseCode.NOT_MATCHED_CODE, "인증번호가 일치하지 않음",
                     Map.of("clientMsg", "인증번호가 일치하지 않습니다."));
         }
@@ -126,7 +124,7 @@ public class BasicJoinServiceImpl implements BasicJoinService {
         member.setName(name);
         basicJoinRepository.saveMember(member);
 
-        basicJoinRepository.initEmailAuthInfo(member.getEmail());
+        basicJoinRepository.initAuthInfo(member.getEmail());
 
         return ResponseResult.createResult(ResponseCode.SUCCESS, "인증번호가 일치함",
                 Map.of("clientMsg", "인증번호가 일치합니다."));
