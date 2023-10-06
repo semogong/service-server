@@ -15,8 +15,8 @@ import static talkwith.semogong.domain.main.QMember.member;
 @Repository
 @RequiredArgsConstructor
 public class BasicLoginRepositoryImpl implements BasicLoginRepository {
-
     private final EntityManager entityManager;
+
     private final JPAQueryFactory jpaQueryFactory;
 
     @Autowired

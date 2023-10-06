@@ -1,6 +1,5 @@
 package talkwith.semogong.session.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import talkwith.semogong.domain.SessionInfo;
 import talkwith.semogong.domain.main.Member;
 

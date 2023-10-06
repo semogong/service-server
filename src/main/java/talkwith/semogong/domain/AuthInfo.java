@@ -10,7 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @Getter @Setter
-public class EmailAuthInfo {
+public class AuthInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

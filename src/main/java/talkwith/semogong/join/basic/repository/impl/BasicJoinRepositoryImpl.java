@@ -4,19 +4,18 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import talkwith.semogong.domain.EmailAuthInfo;
+import talkwith.semogong.domain.AuthInfo;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.join.basic.repository.BasicJoinRepository;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
 import static talkwith.semogong.domain.main.QMember.member;
-import static talkwith.semogong.domain.QEmailAuthInfo.emailAuthInfo;
+import static talkwith.semogong.domain.QAuthInfo.authInfo;
 
 @Repository
 @RequiredArgsConstructor
 public class BasicJoinRepositoryImpl implements BasicJoinRepository {
-
     private final EntityManager entityManager;
 
     private final JPAQueryFactory jpaQueryFactory;
@@ -48,24 +47,24 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
     }
 
     @Override
-    public void saveEmailAuthInfo(EmailAuthInfo emailAuthInfo) {
-        entityManager.persist(emailAuthInfo);
+    public void saveAuthInfo(AuthInfo authInfo) {
+        entityManager.persist(authInfo);
     }
 
     @Override
-    public void initEmailAuthInfo(String email){
+    public void initAuthInfo(String email){
         jpaQueryFactory
-            .delete(emailAuthInfo)
-            .where(emailAuthInfo.to.eq(email))
+            .delete(authInfo)
+            .where(authInfo.to.eq(email))
             .execute();
     }
 
     @Override
-    public Optional<EmailAuthInfo> findCodeByEmail(String email) {
-        EmailAuthInfo result = jpaQueryFactory
-                .selectFrom(emailAuthInfo)
-                .where(emailAuthInfo.to.eq(email))
-                .orderBy(emailAuthInfo.id.desc())
+    public Optional<AuthInfo> findAuthInfoByEmail(String email) {
+        AuthInfo result = jpaQueryFactory
+                .selectFrom(authInfo)
+                .where(authInfo.to.eq(email))
+                .orderBy(authInfo.id.desc())
                 .fetchFirst();
 
         return Optional.ofNullable(result);
