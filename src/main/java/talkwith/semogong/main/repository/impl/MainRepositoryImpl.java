@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import talkwith.semogong.domain.main.Member;
 import talkwith.semogong.domain.main.Post;
-import talkwith.semogong.domain.main.QPost;
 import talkwith.semogong.main.repository.MainRepository;
 
 import javax.persistence.EntityManager;

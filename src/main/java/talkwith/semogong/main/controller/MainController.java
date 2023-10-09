@@ -1,60 +1,54 @@
 package talkwith.semogong.main.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import talkwith.semogong.main.model.PostRequestDto;
 import talkwith.semogong.main.service.MainService;
-import talkwith.semogong.util.response.JsonResponse;
-import talkwith.semogong.util.response.ResponseResult;
+import talkwith.semogong.util.response.ApiResponse;
+import talkwith.semogong.util.response.ServiceApiResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/main")
-@Slf4j
+@RequestMapping("/api/v1/members/main")
 public class MainController {
 
     private final MainService mainService;
 
-    @PostMapping("/profilebar")
-    public JsonResponse loadMainInfo(HttpServletRequest httpServletRequest) {
+    @PostMapping("/profile")
+    public ApiResponse viewProfile(HttpServletRequest httpServletRequest) {
+        ServiceApiResponse serviceApiResponse = mainService.viewProfile(httpServletRequest);
 
-        ResponseResult result = mainService.loadMainInfo(httpServletRequest);
-
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
-    @PostMapping("/load-create-post")
-    public JsonResponse loadCreatePost(HttpServletRequest httpServletRequest) {
+    @PostMapping("/posts/create")
+    public ApiResponse createPost(HttpServletRequest httpServletRequest) {
+        ServiceApiResponse serviceApiResponse = mainService.createPost(httpServletRequest);
 
-        ResponseResult result = mainService.loadCreatePost(httpServletRequest);
-
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
-    @PostMapping("/create-post")
-    public JsonResponse createPost(HttpServletRequest httpServletRequest, @RequestBody PostRequestDto postRequestDto) {
+    @PostMapping("/posts/add")
+    public ApiResponse addPost(HttpServletRequest httpServletRequest, @RequestBody PostRequestDto postRequestDto) {
+        ServiceApiResponse serviceApiResponse = mainService.addPost(httpServletRequest,postRequestDto);
 
-        ResponseResult result = mainService.createPost(httpServletRequest,postRequestDto);
-
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
     @PostMapping("/posts")
-    public JsonResponse showPosts(HttpServletRequest httpServletRequest) {
+    public ApiResponse listPosts(HttpServletRequest httpServletRequest) {
+        ServiceApiResponse serviceApiResponse = mainService.listPosts(httpServletRequest);
 
-        ResponseResult result = mainService.showPosts(httpServletRequest);
-
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
-    @PostMapping("/post/{id}")
-    public JsonResponse showPost(HttpServletRequest httpServletRequest,@PathVariable("id") Long id){
-        ResponseResult result = mainService.showPost(httpServletRequest,id);
+    @PostMapping("/posts/{id}")
+    public ApiResponse viewPost(HttpServletRequest httpServletRequest, @PathVariable("id") Long id){
+        ServiceApiResponse serviceApiResponse = mainService.viewPost(httpServletRequest,id);
 
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
 

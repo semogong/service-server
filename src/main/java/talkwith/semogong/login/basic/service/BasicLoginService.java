@@ -1,13 +1,13 @@
 package talkwith.semogong.login.basic.service;
 
-import talkwith.semogong.util.response.ResponseResult;
+import talkwith.semogong.util.response.ServiceApiResponse;
 
 public interface BasicLoginService {
 
-    ResponseResult validateLogin(String email, String password);
+    ServiceApiResponse validateLogin(String email, String password);
 
-    ResponseResult validateFindId(String name);
+    ServiceApiResponse findEmail(String name);
 
-    ResponseResult validateFindPassword(String email);
+    ServiceApiResponse findPassword(String email);
 
 }

@@ -52,7 +52,7 @@ public class BasicJoinRepositoryImpl implements BasicJoinRepository {
     }
 
     @Override
-    public void initAuthInfo(String email){
+    public void deleteAuthInfo(String email){
         jpaQueryFactory
             .delete(authInfo)
             .where(authInfo.to.eq(email))
