@@ -11,7 +11,7 @@ public interface BasicJoinRepository {
 
     void saveAuthInfo(AuthInfo authInfo);
 
-    void initAuthInfo(String email);
+    void deleteAuthInfo(String email);
 
     Optional<AuthInfo> findAuthInfoByEmail(String email);
     void saveMember(Member member);

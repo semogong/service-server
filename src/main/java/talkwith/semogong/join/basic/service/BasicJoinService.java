@@ -1,9 +1,11 @@
 package talkwith.semogong.join.basic.service;
 
-import talkwith.semogong.util.response.ResponseResult;
+import talkwith.semogong.util.response.ServiceApiResponse;
 
 public interface BasicJoinService {
-    ResponseResult sendAuthCode(String email);
-    ResponseResult handleJoinForm(String email, String password, String name);
-    ResponseResult validateAndJoin(String email, String password, String name, String code);
+    ServiceApiResponse validateForm(String email, String password, String name);
+    ServiceApiResponse sendVerificationCode(String email);
+    boolean validateVerification(String email, String code);
+
+    ServiceApiResponse register(String email, String password, String name);
 }

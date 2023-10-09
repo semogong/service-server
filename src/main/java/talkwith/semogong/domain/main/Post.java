@@ -21,8 +21,6 @@ public class Post extends Base{
 
     private String content;
 
-    private String tag;
-
     private Integer view;
 
 }

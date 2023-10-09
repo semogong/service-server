@@ -6,50 +6,43 @@ import org.springframework.web.bind.annotation.*;
 import talkwith.semogong.login.basic.model.LoginRequestDto;
 import talkwith.semogong.login.basic.service.BasicLoginService;
 import talkwith.semogong.session.service.impl.SessionManagerServiceImpl;
-import talkwith.semogong.util.response.JsonResponse;
-import talkwith.semogong.util.response.ResponseCode;
-import talkwith.semogong.util.response.ResponseResult;
+import talkwith.semogong.util.response.ApiResponse;
+import talkwith.semogong.util.response.StatusCode;
+import talkwith.semogong.util.response.ServiceApiResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/login")
+@RequestMapping("/api/v1/members/login/basic")
 public class BasicLoginController {
     private final BasicLoginService basicLoginService;
 
     private final SessionManagerServiceImpl sessionManagerServiceImpl;
 
-    @PostMapping("/check-login")
-    public JsonResponse basicValidateLogin(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse){
-        String email = loginRequestDto.getEmail();
-        String password = loginRequestDto.getPassword();
+    @PostMapping("/validate-login")
+    public ApiResponse validateLogin(@RequestBody LoginRequestDto loginRequestDto,
+                                    HttpServletResponse httpServletResponse){
 
-        ResponseResult result = basicLoginService.validateLogin(email,password);
+        ServiceApiResponse serviceApiResponse = basicLoginService.validateLogin(
+                loginRequestDto.getEmail(),loginRequestDto.getPassword());
 
-        if (result.getStatusCode().equals(ResponseCode.SUCCESS)){
-            Cookie cookie = sessionManagerServiceImpl.createSession(email);
+        if (serviceApiResponse.getStatusCode().equals(StatusCode.SUCCESS)){
+            Cookie cookie = sessionManagerServiceImpl.createSession(loginRequestDto.getEmail());
             httpServletResponse.addCookie(cookie);
         }
-
-        return new JsonResponse(result);
+        return new ApiResponse(serviceApiResponse);
     }
 
-    @PostMapping("/find-id")
-    public JsonResponse findId(@RequestBody LoginRequestDto loginRequestDto){
-        String name = loginRequestDto.getName();
-
-        ResponseResult result = basicLoginService.validateFindId(name);
-
-        return new JsonResponse(result);
+    @PostMapping("/find-email")
+    public ApiResponse findEmail(@RequestBody LoginRequestDto loginRequestDto){
+        ServiceApiResponse serviceApiResponse = basicLoginService.findEmail(loginRequestDto.getName());
+        return new ApiResponse(serviceApiResponse);
     }
 
-    @PostMapping("/find-pw")
-    public JsonResponse findPw(@RequestBody LoginRequestDto loginRequestDto){
-        String email = loginRequestDto.getEmail();
-
-        ResponseResult result = basicLoginService.validateFindPassword(email);
-
-        return new JsonResponse(result);
+    @PostMapping("/find-password")
+    public ApiResponse findPassword(@RequestBody LoginRequestDto loginRequestDto){
+        ServiceApiResponse serviceApiResponse = basicLoginService.findPassword(loginRequestDto.getEmail());
+        return new ApiResponse(serviceApiResponse);
     }
 }

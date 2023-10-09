@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ResponseCode {
+public class StatusCode {
     public static final String SUCCESS = "0000";
 
     public static final String DUPLICATE_EMAIL = "0001";

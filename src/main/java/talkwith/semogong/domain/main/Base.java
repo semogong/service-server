@@ -12,8 +12,6 @@ public class Base {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    private String formedCreatedAt;
-
     private LocalDateTime updatedAt;
 
     @Column(updatable = false)

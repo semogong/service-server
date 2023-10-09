@@ -1,18 +1,18 @@
 package talkwith.semogong.main.service;
 
 import talkwith.semogong.main.model.PostRequestDto;
-import talkwith.semogong.util.response.ResponseResult;
+import talkwith.semogong.util.response.ServiceApiResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
 public interface MainService {
 
-    ResponseResult loadMainInfo(HttpServletRequest httpServletRequest);
+    ServiceApiResponse viewProfile(HttpServletRequest httpServletRequest);
 
-    ResponseResult loadCreatePost(HttpServletRequest httpServletRequest);
-    ResponseResult createPost(HttpServletRequest httpServletRequest, PostRequestDto postRequestDto);
+    ServiceApiResponse createPost(HttpServletRequest httpServletRequest);
+    ServiceApiResponse addPost(HttpServletRequest httpServletRequest, PostRequestDto postRequestDto);
 
-    ResponseResult showPosts(HttpServletRequest httpServletRequest);
+    ServiceApiResponse listPosts(HttpServletRequest httpServletRequest);
 
-    ResponseResult showPost(HttpServletRequest request, Long id);
+    ServiceApiResponse viewPost(HttpServletRequest request, Long id);
 }
