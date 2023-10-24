@@ -32,14 +32,16 @@ public class BasicJoinController {
     }
 
     @PostMapping("/confirm-registration")
-    public ApiResponse confirmResistration(@RequestBody JoinRequestDto joinRequestDto) {
-        if (basicJoinService.validateVerification(joinRequestDto.getEmail(), joinRequestDto.getCode())) {
-            ServiceApiResponse serviceApiResponse = basicJoinService.register(
-                    joinRequestDto.getEmail(), joinRequestDto.getPassword(), joinRequestDto.getName());
+    public ApiResponse confirmRegistration(@RequestBody JoinRequestDto joinRequestDto) {
+        boolean validated = basicJoinService.validateVerification(joinRequestDto.getEmail(), joinRequestDto.getCode());
+        if (validated) {
+            ServiceApiResponse serviceApiResponse =
+                    basicJoinService.register(joinRequestDto.getEmail(),
+                            joinRequestDto.getPassword(), joinRequestDto.getName());
             return new ApiResponse(serviceApiResponse);
-        } else {
-            return new ApiResponse(StatusCode.GENERAL_FAIL, "인증번호 불일치");
         }
+        return new ApiResponse(StatusCode.GENERAL_FAIL, "인증번호 불일치");
+
     }
 
 }

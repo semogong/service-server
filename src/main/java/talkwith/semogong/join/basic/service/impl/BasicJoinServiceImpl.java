@@ -12,16 +12,17 @@ import talkwith.semogong.join.basic.service.BasicJoinService;
 import talkwith.semogong.util.response.StatusCode;
 import talkwith.semogong.util.response.ServiceApiResponse;
 
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BasicJoinServiceImpl implements BasicJoinService {
+
     private final BasicJoinRepository basicJoinRepository;
 
     private final JavaMailSender mailSender;
-
     private final Random random = new Random();
 
     @Override
@@ -74,48 +75,45 @@ public class BasicJoinServiceImpl implements BasicJoinService {
     }
 
 
-    public boolean validateEmailShape(String email){
+    private boolean validateEmailShape(String email){
         return email.matches("^[A-Za-z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
-    public boolean validateEmailDuplicate(String email) {
+    private boolean validateEmailDuplicate(String email) {
         Optional<Member> member = basicJoinRepository.findMemberByEmail(email);
         return member.isEmpty();
     }
 
-    public boolean validatePasswordLength(String password) {
+    private boolean validatePasswordLength(String password) {
         int passWordLength = password.length();
         return (passWordLength>=4 && passWordLength<=12);
     }
 
-    public boolean validatePasswordShape(String password) {
+    private boolean validatePasswordShape(String password) {
         return password.matches("(?=.*\\d)(?=.*[a-z])(?=.*\\W)(?=\\S+$).{6,12}");
     }
 
-    public boolean validateNameLength(String name) {
+    private boolean validateNameLength(String name) {
         int nameWordLength = name.length();
         return (nameWordLength>=2 && nameWordLength<=10);
     }
 
-    public boolean validateNameDuplicate(String name) {
+    private boolean validateNameDuplicate(String name) {
         Optional<Member> member = basicJoinRepository.findMemberByName(name);
         return member.isEmpty();
     }
 
     @Override
     @Transactional
-    public boolean validateVerification(String email, String code){
+    public boolean validateVerification(String email, @NotNull String code){
         Optional<AuthInfo> findEmailAuthInfo = basicJoinRepository.findAuthInfoByEmail(email);
-        return findEmailAuthInfo.isPresent() && findEmailAuthInfo.get().getCode().equals(code);
+        return code.equals(findEmailAuthInfo.orElseGet(AuthInfo::new).getCode());
     }
 
     @Override
     @Transactional
     public ServiceApiResponse register(String email, String password, String name){
-        Member member = new Member();
-        member.setEmail(email);
-        member.setPassword(password);
-        member.setName(name);
+        Member member = Member.create(name, email, password);
         basicJoinRepository.saveMember(member);
         basicJoinRepository.deleteAuthInfo(member.getEmail());
 
