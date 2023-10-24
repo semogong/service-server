@@ -67,8 +67,9 @@ public class BasicJoinServiceImpl implements BasicJoinService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("[세상의 모든 공부] 일반 회원가입 이메일 인증");
-        message.setText("세모공에 방문해주셔서 감사합니다.\n\n" + "인증번호는 " +
-                code + " 입니다." + "\n\n 인증번호를 인증코드란에 기입해주세요.");
+        message.setText("세모공에 방문해주셔서 감사합니다.\n\n" +
+                "인증번호는 " + code + " 입니다.\n\n" +
+                "인증번호를 인증코드란에 기입해주세요.");
         mailSender.send(message);
 
         return ServiceApiResponse.create(StatusCode.SUCCESS, "일반 회원가입 인증번호 전송 성공");
