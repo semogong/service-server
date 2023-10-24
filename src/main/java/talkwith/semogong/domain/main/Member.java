@@ -7,7 +7,7 @@ import talkwith.semogong.domain.MemberRank;
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
 public class Member {
 
     @Id @GeneratedValue
@@ -15,9 +15,18 @@ public class Member {
     private String name;
     private String email;
     private String password;
-    private Integer totalstudyTime;
-    private Integer totalstudyRatio;
+    private Integer totalStudyTime;
+    private Integer totalStudyRatio;
 
     @OneToOne
     private MemberRank memberRank;
+
+    public static Member create(String name, String email, String password) {
+        Member member = new Member();
+        member.name = name;
+        member.email = email;
+        member.password = password;
+
+        return member;
+    }
 }
